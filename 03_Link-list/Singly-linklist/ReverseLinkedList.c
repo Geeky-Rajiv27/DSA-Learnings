@@ -43,6 +43,7 @@ void insert_END(){
 
        if(head == NULL){
             head = temp = newnode ;
+            count = count + 1 ;
         }else{
             temp->next = newnode ;
             temp = newnode ;
@@ -80,6 +81,20 @@ void specific_position(){
 }
 }
 
+  struct Node* prev = 0, *nextnode , *currentnode ;
+// Reverse linked-list
+void ReverseList(){
+  
+    currentnode = nextnode = head ;
+    while(nextnode != 0){
+        nextnode = currentnode->next ; // updating nextnode
+        currentnode->next = prev ;  // storing address of previous node
+        prev = currentnode ; // shifting prevoius node
+        currentnode = nextnode ; // shifting currentnode
+    }
+    head = prev ;
+}
+
 void traverse()
 {
     temp = head ;
@@ -88,96 +103,21 @@ void traverse()
     {//printing the data and addresses of the nodes
            printf("The data of the node %d : (%d) and it's address is (%p) \n",i,temp->data,temp->next);
            temp = temp->next ;
+           i++ ;
     }
 }
 
-void delete_start(){
-temp = head ;
-head = temp->next ;
-free(temp);     // delete the starting node
-count-- ;
-
-}
-
-void delete_specific(){
-int posi ;
-struct Node * helper ;
-printf("Enter the position of node which you want to delete\t");
-scanf("%d",&posi);
-    int i = 1 ;
-
-
-    if(posi > count || posi <= 0){
-        printf("position is unexpected !\n");
-        printf("Unfortunately, we have created only %d Node\n",count);
-    }else if(posi == 1){
-            delete_start();
-            return;
-    }
-    else{
-        temp = head ;
-    while(i < posi - 1)
-    {
-        temp = temp->next ;
-        i++ ;
-    }
-      // after reaching the position
-      helper = temp->next ;
-      temp->next = helper->next;
-      free(helper);  // deleting the specific node
-       count--;
-       temp =head ;
-}
-}
-
-void TotalNode(){
-    printf("There are total %d Nodes\n",count);
-}
-
-void delete_end(){
-// case : if there is no list
-    if(head == NULL){
-        printf("List is empty\n");
-        return ;
-    }
-
-    // case : if there is only one node
-    if(head->next == NULL){
-        free(head);
-        head = NULL ;
-        count-- ;
-        return ;
-    }
-
-temp = head ;
-
-while(temp->next->next != NULL){
-    temp = temp->next ;
-}
-    // after reaching the position
-     
-      free(temp->next);  // deleting the specific node
-      temp->next = NULL ;
-       count--;
-
-}
 
 int main(){
-    //inserting in the beginning of the list
-   int choice;
+  int choice;
 while(0 != 1){
     printf("\nPress : 1 ---> Insert at the end\n");
     printf("Press : 2 ---> Insert at the beginning\n");
     printf("Press : 3 ---> Insert at the specific position.\n");
     printf("Press : 4 ---> traverse\n");
-    printf("Press : 5 ---> Delete from the start position\n");
-    printf("Press : 6 ---> Delete from the specific position.\n");
-    printf("Press : 7 ---> Delete from the end position.\n");
-    printf("Press : 8 ---> Check total node created\n");
-    printf("Press : 9 ---> exit\n");
+    printf("Press : 5 ---> reverse linked-list\n");
 
-
-
+    printf("Press : 6 ---> exit\n");
 
             printf("Enter where you want to insert : ");
         scanf("%d", &choice);
@@ -190,16 +130,10 @@ while(0 != 1){
                         break;
             case 4 : traverse();
                         break;
-            case 5 : delete_start();
+            case 5 : ReverseList();
                         break;
-            case 6 : delete_specific();
-                        break;
-            case 7 : delete_end();
-                        break;
-            case 8 : TotalNode();
-                        break;
-
-            case 9 : exit(0); 
+          
+            case 6 : exit(0); 
 
             default: printf("Invalid choice !\n");
         }
@@ -207,6 +141,3 @@ while(0 != 1){
 }
    return 0;
 }
-
-
-
